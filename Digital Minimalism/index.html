@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bart Simpson's Digital Detox Challenge</title>
+    <style>
+        :root {
+            --simpson-yellow: #FED41D;
+            --simpson-blue: #00A2E8;
+            --simpson-red: #ED1C24;
+            --simpson-orange: #FF7F27;
+            --simpson-green: #22B14C;
+            --simpson-bgcolor: #FFFDF0;
+            --simpson-text: #333;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        @font-face {
+            font-family: 'Simpson';
+            src: url('https://fonts.cdnfonts.com/css/simpsonfont');
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--simpson-bgcolor);
+            color: var(--simpson-text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--simpson-yellow);
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        header h1 {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 2.5em;
+            color: var(--simpson-blue);
+            text-shadow: 2px 2px 0 #000;
+            margin-bottom: 10px;
+        }
+        
+        .bart-quote {
+            font-style: italic;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            border-left: 5px solid var(--simpson-red);
+        }
+        
+        .quote-author {
+            text-align: right;
+            font-weight: bold;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-top: 8px solid var(--simpson-blue);
+        }
+        
+        .section h2 {
+            color: var(--simpson-blue);
+            font-family: 'Arial Black', sans-serif;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--simpson-yellow);
+            padding-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h2 span {
+            background-color: var(--simpson-yellow);
+            color: var(--simpson-text);
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .theory {
+            margin-bottom: 15px;
+        }
+        
+        .theory h3 {
+            color: var(--simpson-orange);
+            margin-bottom: 10px;
+        }
+        
+        .theory p {
+            margin-bottom: 15px;
+        }
+        
+        .checklist {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .checklist h3 {
+            color: var(--simpson-green);
+            margin-bottom: 10px;
+            font-family: 'Arial Black', sans-serif;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checklist h3::before {
+            content: "✓";
+            background-color: var(--simpson-green);
+            color: white;
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+        
+        .checklist-item {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-container {
+            position: relative;
+            padding-left: 35px;
+            cursor: pointer;
+            font-size: 16px;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            height: 0;
+            width: 0;
+        }
+        
+        .checkmark {
+            position: absolute;
+            left: 0;
+            height: 24px;
+            width: 24px;
+            background-color: #fff;
+            border: 2px solid var(--simpson-blue);
+            border-radius: 4px;
+        }
+        
+        .checkbox-container:hover .checkmark {
+            background-color: #f0f0f0;
+        }
+        
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: var(--simpson-blue);
+        }
+        
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+        
+        .checkbox-container .checkmark:after {
+            left: 9px;
+            top: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+        
+        .checkbox-container input:checked ~ .task-label {
+            text-decoration: line-through;
+            color: #888;
+        }
+        
+        .progress-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--simpson-blue);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        
+        .reset-btn {
+            background-color: var(--simpson-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .reset-btn:hover {
+            background-color: #c41818;
+        }
+        
+        .doh {
+            color: var(--simpson-red);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .comic-dialog {
+            border: 2px solid #000;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            position: relative;
+            background-color: white;
+        }
+        
+        .comic-dialog:before {
+            content: "";
+            position: absolute;
+            bottom: -20px;
+            left: 30px;
+            border: 10px solid transparent;
+            border-top-color: #000;
+        }
+        
+        .comic-dialog:after {
+            content: "";
+            position: absolute;
+            bottom: -17px;
+            left: 31px;
+            border: 9px solid transparent;
+            border-top-color: white;
+        }
+        
+        .comic-dialog p {
+            margin: 0;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .highlight {
+            background-color: var(--simpson-yellow);
+            padding: 2px 5px;
+            font-weight: bold;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--simpson-blue);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        footer p {
+            margin: 5px 0;
+        }
+        
+        .footer-disclaimer {
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Bart Simpson's Digital Detox Challenge</h1>
+            <p>Ay caramba! Time to stop staring at screens!</p>
+        </header>
+        
+        <div class="comic-dialog">
+            <p>"Eat my shorts, social media! I'm doing a digital detox!"</p>
+        </div>
+        
+        <div class="progress-container">
+            <h3>Your Progress, Man!</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-bar"></div>
+            </div>
+            <p class="progress-text" id="progress-text">0% Complete</p>
+        </div>
+        
+        <div class="section">
+            <h2><span>1</span> Why We're All Digital</h2>
+            <div class="theory">
+                <h3>The Attention Economy Trap</h3>
+                <p>Just like Principal Skinner trying to catch Bart in the act, tech companies are constantly trying to catch your attention. They're not providing free services out of the kindness of their hearts - they're selling your attention to advertisers.</p>
+                <p>Remember: <span class="highlight">"If you're not paying for the product, you ARE the product."</span></p>
+                <p>These companies hire psychology experts to make their apps as addictive as possible. They use notifications, infinite scrolling, and algorithms that know exactly what will keep you glued to your screen - just like how Bart can't resist a good prank.</p>
+            </div>
+            
+            <div class="bart-quote">
+                "The attention economy is designed to keep you addicted, not informed."
+                <div class="quote-author">- Not Bart Simpson</div>
+            </div>
+            
+            <div class="checklist">
+                <h3>The "Ay Caramba!" Checklist</h3>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Count how many times you check your phone each day</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Check your screen time stats and say "¡Ay, caramba!"</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">List all the apps that send you notifications</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Calculate how many hours you spend on social media each week</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><span>2</span> The 30-Day Springfield Detox</h2>
+            <div class="theory">
+                <h3>Breaking Free From Digital Springfield</h3>
+                <p>Just like how Bart needs to occasionally escape detention, we all need to escape from our digital devices. The Digital Declutter is a 30-day break from optional technologies - think of it as summer vacation for your brain!</p>
+                <p>During this time, you'll discover what you've been missing while staring at screens. Maybe you'll find new hobbies, have real conversations, or even pull some epic pranks (just keep it legal).</p>
+                <p>After 30 days, you'll have a clearer idea of which digital tools actually add value to your life and which ones are just digital junk food.</p>
+            </div>
+            
+            <div class="bart-quote">
+                "I didn't do it, nobody saw me do it, you can't prove anything!"
+                <div class="quote-author">- Bart Simpson</div>
+            </div>
+            
+            <div class="checklist">
+                <h3>The "Eat My Shorts" Checklist</h3>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Delete social media apps from your phone</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Turn off all non-essential notifications</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Make a list of meaningful activities to do instead</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Tell friends you're taking a digital break</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Set up website blockers on your computer</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><span>3</span> Finding Solitude (Like Hiding in the Treehouse)</h2>
+            <div class="theory">
+                <h3>The Power of Being Alone</h3>
+                <p>Even Bart needs his treehouse - a place where he can be alone with his thoughts. Solitude doesn't mean being lonely; it means having time to think without input from others or from screens.</p>
+                <p>Constant digital connection means our brains never get a chance to process, reflect, or create. It's like having Principal Skinner, Mrs. Krabappel, and the whole class constantly yelling at you.</p>
+                <p>Spending time alone with your thoughts helps improve focus, creativity, and mental wellbeing. It's when your brain can finally breathe.</p>
+            </div>
+            
+            <div class="bart-quote">
+                "Don't have a cow, man. Just disconnect sometimes."
+                <div class="quote-author">- Bart's Digital Wisdom</div>
+            </div>
+            
+            <div class="checklist">
+                <h3>The "Treehouse" Checklist</h3>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Go for a walk without your phone</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Spend 30 minutes just thinking (no distractions)</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Write in a journal using pen and paper</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Try meditation for 10 minutes</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><span>4</span> Real Friends, Not Facebook Friends</h2>
+            <div class="theory">
+                <h3>Meaningful Connections vs. Digital "Likes"</h3>
+                <p>Bart may be a troublemaker, but he values his real friendships with Milhouse, Nelson, and the gang. They have real adventures together, not just virtual ones.</p>
+                <p>Humans are social creatures, but we're not designed to maintain shallow connections with hundreds of people online. We need deep, meaningful relationships with a smaller number of people.</p>
+                <p>A single phone call or in-person meeting can be worth more than a hundred social media interactions. Clicking "like" on someone's post isn't the same as actually being there for them.</p>
+            </div>
+            
+            <div class="bart-quote">
+                "Don't have a cow, man. Have a real conversation instead!"
+                <div class="quote-author">- Bart's Friendship Advice</div>
+            </div>
+            
+            <div class="checklist">
+                <h3>The "Real Friends" Checklist</h3>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Call a friend instead of texting them</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Have a phone-free meal with family or friends</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Schedule specific times for checking messages</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Join a local club or group activity</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><span>5</span> Quality Leisure (Not Just Watching Itchy & Scratchy)</h2>
+            <div class="theory">
+                <h3>Active vs. Passive Entertainment</h3>
+                <p>Bart doesn't just watch TV - he skateboards, pulls pranks, and gets into mischief. In other words, he's active, not passive.</p>
+                <p>Leisure time should be more than just mindless scrolling or binge-watching. The most satisfying activities often require effort and engagement - like learning a new skill, creating something, or being physically active.</p>
+                <p>High-quality leisure leaves you feeling energized and fulfilled, not drained and empty. It's the difference between playing sports and watching sports highlights on YouTube for hours.</p>
+            </div>
+            
+            <div class="bart-quote">
+                "Cowabunga, dude! Time to do something real!"
+                <div class="quote-author">- Bart's Activity Motto</div>
+            </div>
+            
+            <div class="checklist">
+                <h3>The "Cowabunga" Checklist</h3>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Fix or build something with your hands</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Learn a new skill unrelated to technology</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Play a physical game or sport</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Read a physical book (comic books count!)</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="task-checkbox">
+                        <span class="checkmark"></span>
+                        <span class="task-label">Create a weekly schedule for meaningful activities</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <button class="reset-btn" id="reset-button">Reset Progress (D'oh!)</button>
+        
+        <footer>
+            <p>Based on Digital Minimalism principles</p>
+            <p class="footer-disclaimer">This website is not affiliated with The Simpsons or Fox. Just a fun theme!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Update progress bar function
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const total = checkboxes.length;
+            let checked = 0;
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    checked++;
+                }
+            });
+            
+            const percentage = Math.round((checked / total) * 100);
+            
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            progressBar.style.width = percentage + '%';
+            progressText.textContent = percentage + '% Complete';
+        }
+        
+        // Add event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial progress update
+            updateProgress();
+            
+            // Add event listeners to checkboxes
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateProgress);
+            });
+            
+            // Reset button
+            const resetButton = document.getElementById('reset-button');
+            resetButton.addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset your progress? D\'oh!')) {
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
+                    updateProgress();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
