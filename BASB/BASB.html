@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bart Simpson's Second Brain - Interactive Guide</title>
+  <style>
+    :root {
+      --primary: #FED90F; /* Bart's yellow */
+      --secondary: #3F87F5; /* Bart's blue shorts */
+      --accent: #FB5B41; /* Bart's red shirt */
+      --light: #f5f5f5;
+      --dark: #333333;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FED90F' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    
+    header {
+      background-color: var(--primary);
+      color: #333;
+      text-align: center;
+      padding: 2rem 0;
+      border-bottom: 5px solid var(--accent);
+    }
+    
+    header h1:before, header h1:after {
+      content: "🛹";
+      margin: 0 10px;
+    }
+    
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border-left: 5px solid var(--accent);
+    }
+    
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    
+    .tab-btn {
+      background-color: var(--accent);
+      border: none;
+      padding: 1rem 2rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      flex-grow: 1;
+      text-align: center;
+      color: white;
+    }
+    
+    .tab-btn.active {
+      background-color: var(--secondary);
+      color: white;
+    }
+    
+    .tab-content {
+      display: none;
+      padding: 1rem;
+      background-color: white;
+      border-radius: 0 0 8px 8px;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .quote {
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--dark);
+      padding: 1rem 2rem;
+      border-left: 4px solid var(--primary);
+      margin: 1rem 0;
+      background-color: rgba(254, 217, 15, 0.1);
+    }
+    
+    .quote:before {
+      content: "\"Ay, caramba! ";
+    }
+    
+    .quote:after {
+      content: " Eat my shorts!\"";
+    }
+    
+    .accordion {
+      background-color: var(--secondary);
+      color: white;
+      cursor: pointer;
+      padding: 1rem;
+      width: 100%;
+      text-align: left;
+      border: none;
+      outline: none;
+      transition: 0.4s;
+      font-weight: bold;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .accordion:hover {
+      background-color: #2a6cd6;
+    }
+    
+    .panel {
+      padding: 0 1rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease-out;
+      background-color: white;
+      border-radius: 0 0 4px 4px;
+    }
+    
+    .progress-container {
+      width: 100%;
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      margin: 1rem 0;
+    }
+    
+    .progress-bar {
+      width: 0;
+      height: 20px;
+      background-color: var(--accent);
+      border-radius: 10px;
+      text-align: center;
+      line-height: 20px;
+      color: white;
+    }
+    
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .checklist-item input[type="checkbox"] {
+      margin-right: 1rem;
+      width: 20px;
+      height: 20px;
+    }
+    
+    .code-block {
+      background-color: #f1f1f1;
+      border-radius: 4px;
+      padding: 1rem;
+      font-family: monospace;
+      margin: 1rem 0;
+    }
+    
+    footer {
+      background-color: var(--secondary);
+      color: white;
+      text-align: center;
+      padding: 2rem 0;
+      margin-top: 2rem;
+      border-top: 5px solid var(--primary);
+    }
+    
+    h2:before {
+      content: "✏️ ";
+    }
+    
+    .bart-signature {
+      font-family: 'Comic Sans MS', cursive;
+      color: var(--accent);
+      font-weight: bold;
+      font-style: italic;
+      font-size: 1.2em;
+    }
+    
+    @media (max-width: 768px) {
+      .tab-btn {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Bart Simpson's Second Brain</h1>
+    <p>An interactive guide to organizing your life without doing any homework</p>
+  </header>
+  
+  <div class="container">
+    <div class="card">
+      <h2>What is a Second Brain, Man?</h2>
+      <p>In today's totally radical world, humans consume approximately 34GB of data daily—that's like reading 174 full newspapers! <span class="bart-signature">Don't have a cow, man!</span></p>
+      <p>Tiago Forte presents a method to offload and organize information, allowing us to focus on pranking Principal Skinner rather than remembering boring facts.</p>
+      <div class="quote">Your mind is for having ideas, not holding them.</div>
+      <p>A Second Brain is basically like having Milhouse remember all your stuff for you, enhancing your ability to skateboard through life while keeping all your cool ideas organized.</p>
+    </div>
+    
+    <div class="card">
+      <h2>The C.O.D.E. Method (Cooler Organized Dude Energy)</h2>
+      <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'capture')">Capture</button>
+        <button class="tab-btn" onclick="openTab(event, 'organize')">Organize</button>
+        <button class="tab-btn" onclick="openTab(event, 'distill')">Distill</button>
+        <button class="tab-btn" onclick="openTab(event, 'express')">Express</button>
+      </div>
+      
+      <div id="capture" class="tab-content active">
+        <h3>C - Capture (Keep the cool stuff)</h3>
+        <p>Collect information around you that seems interesting into your note-taking app, like collecting Krusty the Clown trading cards.</p>
+        <h4>What to capture:</h4>
+        <ul>
+          <li>Ideas for awesome pranks</li>
+          <li>Content that answers your burning questions</li>
+          <li>Information that makes you go "¡Ay, caramba!"</li>
+        </ul>
+        <h4>What to avoid keeping:</h4>
+        <ul>
+          <li>Homework assignments</li>
+          <li>Chalkboard detention writings</li>
+          <li>Principal Skinner's boring announcements</li>
+        </ul>
+        <div class="quote">Listen to your gut—if something inside you says "cowabunga," trust it and capture it.</div>
+      </div>
+      
+      <div id="organize" class="tab-content">
+        <h3>O - Organize (File it like Lisa would)</h3>
+        <p>Organize using the PARA Method (even though organization is totally for nerds):</p>
+        <ul>
+          <li><strong>P</strong>ranks - Short-term mischief in progress</li>
+          <li><strong>A</strong>wesome stuff - Ongoing cool things you're into</li>
+          <li><strong>R</strong>adical knowledge - Topics that might be useful for future schemes</li>
+          <li><strong>A</strong>ncient history - Old stuff you don't need right now</li>
+        </ul>
+        <p>Plus a messy desk (inbox) for tossing new stuff until you deal with it.</p>
+        <div class="quote">In PARA, Pranks and Awesome stuff are what you're doing now, while Radical knowledge and Ancient history are just there when you need them.</div>
+      </div>
+      
+      <div id="distill" class="tab-content">
+        <h3>D - Distill (Find the secret sauce)</h3>
+        <p>Find the essence of your notes through progressive summarization (like cheating on a test but legal):</p>
+        <ol>
+          <li>Bold the parts that would impress Lisa</li>
+          <li>Highlight the words that would make Homer say "Woo-hoo!"</li>
+          <li>Summarize for Bart-sized attention spans</li>
+          <li>Write the "eat my shorts" version</li>
+        </ol>
+        <p>If you have limited time, read only the bold parts. If detention is extra long, read everything.</p>
+        <div class="quote">Just make your note slightly less lame every time you touch it. Don't try to do it all during one detention session.</div>
+      </div>
+      
+      <div id="express" class="tab-content">
+        <h3>E - Express (Show off your work)</h3>
+        <p>Use your knowledge to create cool stuff and share it with Springfield. All the feedback we receive is a chance to make our next prank even better.</p>
+        <p>How to express Bart-style:</p>
+        <ol>
+          <li>Break big projects into skateboard-sized chunks</li>
+          <li>Keep your treehouse organized with the PARA method</li>
+          <li>Use progressive summarization (like Cliff's Notes but better)</li>
+          <li>Embrace imperfection – "Just do it, man!"</li>
+        </ol>
+        <div class="quote">An idea wants to be shared. And in the sharing, it becomes more complex, more interesting and more likely to freak out more adults.</div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>Key Insights</h2>
+      <button class="accordion">The Brain's Purpose</button>
+      <div class="panel">
+        <p>Your brain isn't meant for storing boring facts; it's designed for coming up with awesome pranks and skateboard tricks!</p>
+      </div>
+      
+      <button class="accordion">Digital Organization</button>
+      <div class="panel">
+        <p>Using a digital note-taking system allows us to be more like Bart (clever and quick) and less like Principal Skinner (stuck in the past).</p>
+      </div>
+      
+      <button class="accordion">Nature of Creativity</button>
+      <div class="panel">
+        <p>Creativity isn't about luck—it's about combining different pranks into one super-prank! <span class="bart-signature">Cowabunga!</span></p>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>Memorable Quotes</h2>
+      <div class="quote">Your mind is for having ideas, not holding them.</div>
+      <div class="quote">Everything not saved will be erased, like when Mrs. Krabappel catches you cheating.</div>
+      <div class="quote">Be regular and orderly in your life so that you may be wild and original in your pranks.</div>
+      <div class="quote">To attain knowledge, add things everyday. To attain wisdom, remove things everyday.</div>
+      <div class="quote">We only know what we make, dude.</div>
+      <div class="quote">Creative pranks are always shiny and new; The creative process is ancient and unchanging.</div>
+      <div class="quote">It is in the power of remembering that the self's ultimate freedom consists. I am free because I remember where I hid all my slingshots.</div>
+    </div>
+    
+    <div class="card">
+      <h2>Implementation Checklist</h2>
+      <p>Track your progress in building your Second Brain (or avoiding homework):</p>
+      <div class="progress-container">
+        <div class="progress-bar" id="progress">0%</div>
+      </div>
+      
+      <div class="checklist-item">
+        <input type="checkbox" onclick="updateProgress()"> Choose a note-taking app that Principal Skinner wouldn't understand
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" onclick="updateProgress()"> Set up PARA folders (Pranks, Awesome stuff, Radical knowledge, Ancient history)
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" onclick="updateProgress()"> Create a "Stuff to Deal With Later" folder (Inbox)
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" onclick="updateProgress()"> Capture your first set of prank ideas
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" onclick="updateProgress()"> Practice progressive summarization on your detention notes
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" onclick="updateProgress()"> Move notes from your messy desk to appropriate PARA folders
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" onclick="updateProgress()"> Create your first skateboard trick from your notes
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" onclick="updateProgress()"> Schedule a weekly review (while pretending to pay attention in class)
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>Maintenance Habits</h2>
+      <p>Like your skateboard, your Second Brain also needs maintenance to work properly and efficiently:</p>
+      <ul>
+        <li>Use prank checklists to avoid getting caught</li>
+        <li>Do weekly and monthly reviews while sitting in detention</li>
+        <li>Regularly ask yourself "What Would Bart Do?" in tricky situations</li>
+        <li>Organize your secret hideouts containing relevant notes</li>
+        <li>Search for related pranks across folders for maximum impact</li>
+      </ul>
+      <div class="quote">Habits reduce brain work and free up mental space, so you can focus on what really matters... skateboarding and avoiding homework! It's only by making the boring stuff easier that you can create the mental space needed for planning the perfect prank.</div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>Book Review Rating: 9.5/10 🛹✨</p>
+    <p>"Building a Second Brain" by Tiago Forte - Bart Simpson Edition</p>
+    <p class="bart-signature">Don't have a cow, man!</p>
+  </footer>
+
+  <script>
+    function openTab(evt, tabName) {
+      let tabcontent = document.getElementsByClassName("tab-content");
+      for (let i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].classList.remove("active");
+      }
+      
+      let tablinks = document.getElementsByClassName("tab-btn");
+      for (let i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+      }
+      
+      document.getElementById(tabName).classList.add("active");
+      evt.currentTarget.classList.add("active");
+    }
+    
+    let acc = document.getElementsByClassName("accordion");
+    for (let i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        let panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
+    
+    function updateProgress() {
+      let checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+      let checked = 0;
+      
+      checkboxes.forEach(checkbox => {
+        if (checkbox.checked) checked++;
+      });
+      
+      let progressPercent = Math.round((checked / checkboxes.length) * 100);
+      let progressBar = document.getElementById("progress");
+      progressBar.style.width = progressPercent + "%";
+      progressBar.innerHTML = progressPercent + "%";
+    }
+  </script>
+</body>
+</html>
