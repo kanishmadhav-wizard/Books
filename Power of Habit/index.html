@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The D'oh! Power of Habit - Simpsons Style</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        @font-face {
+            font-family: 'SimpsonsFont';
+            src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-solid-900.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --simpsons-yellow: #FED90F;
+            --simpsons-blue: #3F95FF;
+            --simpsons-red: #FF5F40;
+            --simpsons-green: #7DEB74;
+            --simpsons-purple: #9D7FE5;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--simpsons-blue);
+            background-image: linear-gradient(45deg, var(--simpsons-blue) 25%, #5EA2FF 25%, #5EA2FF 50%, var(--simpsons-blue) 50%, var(--simpsons-blue) 75%, #5EA2FF 75%, #5EA2FF 100%);
+            background-size: 56px 56px;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        header {
+            background-color: var(--simpsons-yellow);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            border-bottom: 10px solid var(--simpsons-red);
+        }
+
+        h1 {
+            font-family: 'SimpsonsFont', 'Arial Black', sans-serif;
+            font-size: 3rem;
+            color: #000;
+            margin: 0;
+            text-shadow: 2px 2px 0 #fff, 4px 4px 0 var(--simpsons-red);
+        }
+
+        h2 {
+            font-family: 'SimpsonsFont', 'Arial Black', sans-serif;
+            color: var(--simpsons-red);
+            border-bottom: 3px dotted var(--simpsons-blue);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: var(--simpsons-purple);
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 20px;
+            position: relative;
+        }
+
+        .donut {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: var(--simpsons-red);
+            border-radius: 50%;
+            border: 10px solid var(--simpsons-yellow);
+            box-shadow: inset 0 0 10px #00000050;
+        }
+
+        .donut:before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: white;
+            border-radius: 50%;
+            top: 10px;
+            left: 10px;
+        }
+
+        .donut:after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+            top: 30px;
+            left: 30px;
+        }
+
+        .section {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 3px solid var(--simpsons-blue);
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .character {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            right: -20px;
+            top: -20px;
+            z-index: 2;
+            background-color: var(--simpsons-yellow);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            border: 3px solid #000;
+        }
+
+        .character::after {
+            content: 'DOH!';
+            font-family: 'SimpsonsFont', 'Arial Black', sans-serif;
+            color: var(--simpsons-red);
+        }
+
+        .quote-bubble {
+            background-color: white;
+            border: 3px solid #000;
+            border-radius: 20px;
+            padding: 15px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .quote-bubble:before {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50px;
+            border-width: 20px 0 0 20px;
+            border-style: solid;
+            border-color: #000 transparent transparent transparent;
+        }
+
+        .quote-bubble p {
+            font-family: 'Comic Sans MS', cursive;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        .interactive-section {
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: var(--simpsons-yellow);
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .interactive-section:hover {
+            background-color: var(--simpsons-green);
+        }
+
+        .hidden-content {
+            display: none;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .habit-tracker {
+            background-color: var(--simpsons-green);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .habit-input {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .habit-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 2px solid var(--simpsons-blue);
+            border-radius: 5px 0 0 5px;
+            font-size: 16px;
+        }
+
+        .habit-input button {
+            background-color: var(--simpsons-yellow);
+            border: 2px solid var(--simpsons-blue);
+            border-left: none;
+            border-radius: 0 5px 5px 0;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .habit-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .habit-item {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .habit-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .checkbox {
+            width: 25px;
+            height: 25px;
+            background-color: white;
+            border: 2px solid var(--simpsons-blue);
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .checkbox.checked:after {
+            content: '✓';
+            position: absolute;
+            top: -5px;
+            left: 5px;
+            color: var(--simpsons-green);
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: var(--simpsons-yellow);
+            padding: 20px;
+            text-align: center;
+            border-top: 10px solid var(--simpsons-red);
+            font-family: 'SimpsonsFont', 'Arial', sans-serif;
+        }
+
+        .animate-bounce {
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .clouds {
+            position: absolute;
+            width: 100%;
+            height: 100px;
+            top: 0;
+            left: 0;
+            opacity: 0.6;
+            z-index: 1;
+            background: linear-gradient(90deg, transparent 0%, white 15%, transparent 30%, white 45%, transparent 60%, white 75%, transparent 90%);
+            animation: moveClouds 30s linear infinite;
+        }
+
+        @keyframes moveClouds {
+            0% { background-position: 0 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        /* Media queries for responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                margin: 10px auto;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .donut {
+                display: none;
+            }
+        }
+        
+        /* Character icons */
+        .homer-icon::before {
+            content: 'H';
+            color: var(--simpsons-red);
+            font-weight: bold;
+        }
+        
+        .lisa-icon::before {
+            content: 'L';
+            color: var(--simpsons-blue);
+            font-weight: bold;
+        }
+        
+        .bart-icon::before {
+            content: 'B';
+            color: var(--simpsons-blue);
+            font-weight: bold;
+        }
+        
+        .marge-icon::before {
+            content: 'M';
+            color: var(--simpsons-green);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="clouds"></div>
+        <header>
+            <h1 class="animate__animated animate__rubberBand">The D'oh! Power of Habit</h1>
+            <p style="font-size: 1.2rem; font-weight: bold;">Homer's Guide to Breaking Bad Habits</p>
+            <div class="donut" style="top: 20px; right: 50px;"></div>
+            <div class="donut" style="bottom: 20px; left: 70px;"></div>
+        </header>
+
+        <div class="content">
+            <div class="section">
+                <div class="character homer-icon"></div>
+                <h2>Book Overview</h2>
+                <p>Welcome to Springfield's guide to habit change! Charles Duhigg provides valuable insights into the importance of habits, how they shape our lives, and the ways we can effectively change them - even if you're as set in your ways as Homer Simpson!</p>
+                
+                <div class="quote-bubble">
+                    <p>"Mmm... habits. Can't live with 'em, can't stop eating donuts!" - Homer Simpson</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Key Insights</h2>
+                <div class="interactive-section" onclick="toggleContent('insight1')">Insight 1: The Automaticity of Habits</div>
+                <div id="insight1" class="hidden-content">
+                    <p>Habits run automatically, and changing them isn't as simple as it seems. Gaining a deeper understanding of how they work empowers us to break bad habits effectively. Just like Homer's automatic reach for Duff beer!</p>
+                </div>
+
+                <div class="interactive-section" onclick="toggleContent('insight2')">Insight 2: Transformation Through Habit Change</div>
+                <div id="insight2" class="hidden-content">
+                    <p>Changing our habits transforms the way we think and helps us organize our lives more effectively. Even Lisa Simpson developed her saxophone skills through consistent practice habits!</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>The Habit Loop</h2>
+                <p>This chapter explores the Habit Loop, explaining how habits function and how they simplify our lives by automating routine actions.</p>
+                
+                <div class="interactive-section" onclick="toggleContent('habitLoop')">Learn About The Habit Loop</div>
+                <div id="habitLoop" class="hidden-content">
+                    <h3>Components of the Habit Loop:</h3>
+                    <ul>
+                        <li><strong>Cue:</strong> The trigger that initiates the habit (like Marge's stress when the kids misbehave)</li>
+                        <li><strong>Routine:</strong> The behavior itself (like Homer saying "D'oh!" when things go wrong)</li>
+                        <li><strong>Reward:</strong> The benefit you get from the behavior (like Bart's satisfaction after a successful prank)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Memorable Quotes</h2>
+                <div class="interactive-section" onclick="toggleContent('quote1')">The Golden Rule of Habit Change</div>
+                <div id="quote1" class="hidden-content">
+                    <p>"You can't extinguish a bad habit, you can only change it." Just like how Homer can't stop snacking, but he can change from donuts to fruit (occasionally).</p>
+                </div>
+
+                <div class="interactive-section" onclick="toggleContent('quote2')">Champions and Ordinary Things</div>
+                <div id="quote2" class="hidden-content">
+                    <p>"Champions don't do extraordinary things. They do ordinary things, but they do them without thinking, too fast for the other team to react. They follow the habits they've learned." Lisa's saxophone excellence comes from daily practice!</p>
+                </div>
+
+                <div class="interactive-section" onclick="toggleContent('quote3')">Keystone Habits</div>
+                <div id="quote3" class="hidden-content">
+                    <p>"Keystone habits say that success doesn't depend on getting every single thing right, but instead relies on identifying a few key priorities and fashioning them into powerful levers." Mr. Burns didn't become successful by accident!</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>The Framework For Change</h2>
+                
+                <div class="interactive-section" onclick="toggleContent('step1')">Step 1: Identify the Routine</div>
+                <div id="step1" class="hidden-content">
+                    <p>The first step is to clearly identify the habit or routine you want to change. It's important to be specific about the actions you are trying to alter, whether it's biting your nails, snacking late at night, or checking your phone too often.</p>
+                    <p><strong>Springfield Example:</strong> Homer wants to stop eating donuts every morning at work.</p>
+                </div>
+
+                <div class="interactive-section" onclick="toggleContent('step2')">Step 2: Experiment with Rewards</div>
+                <div id="step2" class="hidden-content">
+                    <p>Next, you need to experiment with different rewards to understand what truly satisfies the craving that drives the habit. For instance, try five different routines when you feel the urge to act on the habit.</p>
+                    <p><strong>Springfield Example:</strong> Homer tries different morning treats: fruit, coffee, a walk around the plant, chatting with Lenny and Carl, and a brief nap.</p>
+                </div>
+
+                <div class="interactive-section" onclick="toggleContent('step3')">Step 3: Isolate the Cue</div>
+                <div id="step3" class="hidden-content">
+                    <p>Once you've understood the routine and reward, the next step is to isolate the cue—what triggers the habit.</p>
+                    <p><strong>Springfield Example:</strong> Homer realizes he reaches for donuts whenever Mr. Burns announces a plant inspection (the cue is stress and boredom).</p>
+                </div>
+
+                <div class="interactive-section" onclick="toggleContent('step4')">Step 4: Have a Plan</div>
+                <div id="step4" class="hidden-content">
+                    <p>Finally, you need to have a clear plan to replace the old habit with a new, more beneficial routine. Prepare yourself to respond to the same cue with a new action that leads to a positive outcome.</p>
+                    <p><strong>Springfield Example:</strong> Now when Mr. Burns announces an inspection, Homer takes a short walk around the plant instead of eating a donut.</p>
+                </div>
+            </div>
+
+            <div class="habit-tracker">
+                <h2>D'oh! Track Your Habits</h2>
+                <p>Create your own Springfield-style habit tracker! Add the habits you want to form or break:</p>
+                
+                <div class="habit-input">
+                    <input type="text" id="habitInput" placeholder="Enter a new habit...">
+                    <button onclick="addHabit()">Add Habit</button>
+                </div>
+                
+                <ul class="habit-list" id="habitList">
+                    <!-- Habits will be added here -->
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>The Power of Habit: Springfield Edition © 2025</p>
+            <p>"Remember: If something's hard to do, then it's not worth doing!" - Homer J. Simpson</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleContent(id) {
+            const content = document.getElementById(id);
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+            } else {
+                content.style.display = 'block';
+            }
+        }
+
+        function addHabit() {
+            const habitInput = document.getElementById('habitInput');
+            const habitList = document.getElementById('habitList');
+            
+            if (habitInput.value.trim() !== '') {
+                const li = document.createElement('li');
+                li.className = 'habit-item';
+                
+                const habitText = document.createElement('span');
+                habitText.textContent = habitInput.value;
+                
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+                checkbox.onclick = function() {
+                    this.classList.toggle('checked');
+                    if (this.classList.contains('checked')) {
+                        habitText.style.textDecoration = 'line-through';
+                    } else {
+                        habitText.style.textDecoration = 'none';
+                    }
+                };
+                
+                li.appendChild(habitText);
+                li.appendChild(checkbox);
+                habitList.appendChild(li);
+                
+                habitInput.value = '';
+            }
+        }
+
+        // Easter eggs and animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add random donut animation
+            setInterval(function() {
+                const donuts = document.querySelectorAll('.donut');
+                const randomDonut = donuts[Math.floor(Math.random() * donuts.length)];
+                randomDonut.classList.add('animate-bounce');
+                
+                setTimeout(function() {
+                    randomDonut.classList.remove('animate-bounce');
+                }, 1000);
+            }, 5000);
+            
+            // Easter egg - clicking Homer quotes
+            const quoteBubbles = document.querySelectorAll('.quote-bubble');
+            quoteBubbles.forEach(bubble => {
+                bubble.addEventListener('click', function() {
+                    const quotes = [
+                        "D'oh!",
+                        "Mmm... donuts",
+                        "Why you little!",
+                        "Stupid Flanders!",
+                        "Woo-hoo!",
+                        "I'm going to the Duff brewery!"
+                    ];
+                    
+                    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                    alert("Homer says: " + randomQuote);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
