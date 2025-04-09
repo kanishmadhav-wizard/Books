@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bart's Guide to Love Languages</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #4e9ad8;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffd521;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin-top: 40px;
+      border: 8px solid #000;
+    }
+    
+    header {
+      text-align: center;
+      padding: 10px;
+      position: relative;
+    }
+    
+    h1 {
+      color: #e94834;
+      font-size: 36px;
+      text-shadow: 2px 2px 0px #000;
+      margin-bottom: 5px;
+    }
+    
+    h2 {
+      color: #000;
+      margin-top: 5px;
+    }
+    
+    .quiz-container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border: 3px solid #000;
+    }
+    
+    .question {
+      margin-bottom: 30px;
+    }
+    
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .option {
+      background-color: #75c7fc;
+      border: 2px solid #000;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .option:hover {
+      background-color: #e94834;
+      color: white;
+    }
+    
+    .selected {
+      background-color: #e94834;
+      color: white;
+    }
+    
+    .button {
+      background-color: #e94834;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: block;
+      margin: 20px auto;
+      font-weight: bold;
+      border: 3px solid #000;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    
+    .button:hover {
+      background-color: #c7371f;
+      transform: scale(1.05);
+    }
+    
+    .result-container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      text-align: center;
+      display: none;
+      border: 3px solid #000;
+    }
+    
+    .love-language-info {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border: 3px solid #000;
+    }
+    
+    .love-language-section {
+      margin-bottom: 20px;
+      border-bottom: 1px dashed #000;
+      padding-bottom: 15px;
+    }
+    
+    .love-language-section:last-child {
+      border-bottom: none;
+    }
+    
+    .bubble {
+      background-color: white;
+      border: 3px solid #000;
+      border-radius: 20px;
+      padding: 10px 15px;
+      position: relative;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .bubble:after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      border: 10px solid transparent;
+      border-top-color: #000;
+      transform: translateX(-50%);
+    }
+    
+    .bubble:before {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      border: 8px solid transparent;
+      border-top-color: white;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+    
+    .message {
+      font-weight: bold;
+      font-size: 20px;
+      color: #e94834;
+      display: inline-block;
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      color: #000;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .reflection-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #e94834;
+      color: white;
+      border: 3px solid #000;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 12px;
+      z-index: 1000;
+    }
+    
+    .tabs {
+      display: flex;
+      margin-top: 20px;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      background-color: #75c7fc;
+      border: 2px solid #000;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .tab.active {
+      background-color: #e94834;
+      color: white;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .theory-point {
+      margin-bottom: 15px;
+      padding-left: 15px;
+      border-left: 3px solid #e94834;
+    }
+    
+    .reflection-question {
+      background-color: #f8f8f8;
+      padding: 15px;
+      border-left: 4px solid #e94834;
+      margin: 15px 0;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="bubble">
+        <span class="message">Understanding Love Languages: A Journey to Better Relationships</span>
+      </div>
+      <h1>Bart's Guide to</h1>
+      <h2>The 5 Love Languages</h2>
+    </header>
+    
+    <div class="tabs">
+      <div class="tab active" onclick="openTab('quiz-tab')">Self-Assessment</div>
+      <div class="tab" onclick="openTab('theory-tab')">Love Languages Theory</div>
+      <div class="tab" onclick="openTab('reflection-tab')">Personal Reflection</div>
+    </div>
+    
+    <div id="quiz-tab" class="tab-content active">
+      <div class="quiz-container" id="quiz">
+        <p>Understanding your primary love language can help improve your relationships. Answer these thoughtful questions to discover how you prefer to give and receive love.</p>
+        
+        <div class="question">
+          <h3>1. How do you most meaningfully express care to others?</h3>
+          <div class="options">
+            <div class="option" onclick="selectOption(this, 1)">I speak words of encouragement and appreciation</div>
+            <div class="option" onclick="selectOption(this, 1)">I dedicate focused, uninterrupted time with them</div>
+            <div class="option" onclick="selectOption(this, 1)">I find or create thoughtful gifts that show I understand them</div>
+            <div class="option" onclick="selectOption(this, 1)">I help them with tasks or responsibilities to lighten their burden</div>
+            <div class="option" onclick="selectOption(this, 1)">I express warmth through appropriate physical connection</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <h3>2. When do you feel most valued in a relationship?</h3>
+          <div class="options">
+            <div class="option" onclick="selectOption(this, 2)">When someone verbally acknowledges my efforts or qualities</div>
+            <div class="option" onclick="selectOption(this, 2)">When someone gives me their undivided attention and listens deeply</div>
+            <div class="option" onclick="selectOption(this, 2)">When someone gives me something that shows they understand me</div>
+            <div class="option" onclick="selectOption(this, 2)">When someone takes action to make my life easier or better</div>
+            <div class="option" onclick="selectOption(this, 2)">When someone expresses care through appropriate touch</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <h3>3. What form of appreciation would mean the most to you?</h3>
+          <div class="options">
+            <div class="option" onclick="selectOption(this, 3)">A heartfelt note or conversation expressing what I mean to you</div>
+            <div class="option" onclick="selectOption(this, 3)">Setting aside regular time just for us without distractions</div>
+            <div class="option" onclick="selectOption(this, 3)">A thoughtful gift that reflects my interests or needs</div>
+            <div class="option" onclick="selectOption(this, 3)">Taking care of a responsibility I normally handle</div>
+            <div class="option" onclick="selectOption(this, 3)">A warm embrace or reassuring physical presence</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <h3>4. What would make you feel most disconnected in a relationship?</h3>
+          <div class="options">
+            <div class="option" onclick="selectOption(this, 4)">Criticism or lack of verbal affirmation over time</div>
+            <div class="option" onclick="selectOption(this, 4)">Consistent distraction or lack of quality conversation</div>
+            <div class="option" onclick="selectOption(this, 4)">Forgotten special occasions or thoughtless gifts</div>
+            <div class="option" onclick="selectOption(this, 4)">Neglecting to help when you're clearly overwhelmed</div>
+            <div class="option" onclick="selectOption(this, 4)">A noticeable absence of physical connection or warmth</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <h3>5. How do you instinctively support someone going through difficulties?</h3>
+          <div class="options">
+            <div class="option" onclick="selectOption(this, 5)">Offer encouraging words and reassurance of their worth</div>
+            <div class="option" onclick="selectOption(this, 5)">Set aside time to be fully present with them</div>
+            <div class="option" onclick="selectOption(this, 5)">Give them something meaningful to show they're not alone</div>
+            <div class="option" onclick="selectOption(this, 5)">Take action to solve practical problems they're facing</div>
+            <div class="option" onclick="selectOption(this, 5)">Offer comforting physical presence like a hand on their shoulder</div>
+          </div>
+        </div>
+        
+        <button class="button" onclick="showResults()">Discover Your Love Language</button>
+      </div>
+      
+      <div class="result-container" id="result">
+        <h2>Your Primary Love Language is:</h2>
+        <h1 id="result-language">Words of Affirmation</h1>
+        <p id="result-description">You value verbal acknowledgment and encouragement. Heartfelt compliments and words of appreciation deeply resonate with you. When someone takes the time to notice your efforts and express their gratitude or admiration, you feel truly loved and valued.</p>
+        
+        <div class="bubble">
+          <span class="message" id="reflection-prompt">Question to consider: How might understanding your love language help you communicate your needs better in relationships?</span>
+        </div>
+        
+        <button class="button" onclick="restartQuiz()">Take Assessment Again</button>
+      </div>
+    </div>
+    
+    <div id="theory-tab" class="tab-content">
+      <div class="love-language-info">
+        <h2>Understanding the 5 Love Languages</h2>
+        <p>Dr. Gary Chapman's concept of love languages provides a framework for understanding how we express and experience love. Each person has a primary "love language" - their preferred way of giving and receiving love. When we understand our own love language and those of the people we care about, we can nurture healthier, more fulfilling relationships.</p>
+        
+        <div class="theory-point">
+          <p><strong>The Love Tank Concept:</strong> Chapman suggests that each of us has an emotional "love tank" that needs regular filling. When our love tank is full, we feel secure, content, and connected. When it's empty, we feel lonely, unappreciated, and disconnected from others.</p>
+          
+          <div class="reflection-question">
+            Consider your own love tank: When do you feel it's being filled? When do you notice it becoming depleted? What specific actions or experiences contribute to each state?
+          </div>
+        </div>
+        
+        <div class="theory-point">
+          <p><strong>Relationship Evolution:</strong> The initial "in-love" phase of relationships typically lasts about two years. During this time, our love tanks often feel full regardless of whether our partner speaks our love language. As this phase naturally fades, understanding and speaking each other's love languages becomes crucial for maintaining emotional connection.</p>
+          
+          <div class="reflection-question">
+            Think about your longest relationship: How did expressions of love change over time? Did you notice a shift after the initial excitement phase?
+          </div>
+        </div>
+        
+        <div class="love-language-section">
+          <h3>1. Words of Affirmation</h3>
+          <p>This language uses words to affirm, encourage, appreciate, and empathize with others. For these individuals, spoken affirmation is powerful emotional nourishment.</p>
+          <p><strong>Expressions include:</strong></p>
+          <ul>
+            <li><strong>Words of Encouragement:</strong> "I believe in you and your abilities."</li>
+            <li><strong>Words of Appreciation:</strong> "Thank you for taking time to listen to me today."</li>
+            <li><strong>Words of Empathy:</strong> "I understand this is difficult; your feelings make sense."</li>
+          </ul>
+          <p><strong>In Family Context:</strong> Even a child who acts out, like Bart, deeply needs to hear words that affirm their worth beyond their behavior. A simple "I'm proud of your creativity" can transform their self-image.</p>
+          
+          <div class="reflection-question">
+            What specific words of affirmation would you most like to hear from someone you care about? What words have had the greatest positive impact on you in the past?
+          </div>
+        </div>
+        
+        <div class="love-language-section">
+          <h3>2. Quality Time</h3>
+          <p>This language is about giving someone your undivided attention. It's not just about physical presence but about being emotionally present and engaged.</p>
+          <p><strong>Expressions include:</strong></p>
+          <ul>
+            <li><strong>Focused Attention:</strong> Putting away phones and distractions to truly be present</li>
+            <li><strong>Quality Conversation:</strong> Sharing thoughts, feelings, and experiences with empathetic listening</li>
+            <li><strong>Shared Activities:</strong> Engaging in meaningful activities together</li>
+          </ul>
+          <p><strong>In Family Context:</strong> When family members make time for each other – like a parent setting aside time to participate in a child's interests – it communicates value beyond words.</p>
+          
+          <div class="reflection-question">
+            What quality time experiences have meant the most to you? What activities help you feel most connected to others?
+          </div>
+        </div>
+        
+        <div class="love-language-section">
+          <h3>3. Receiving Gifts</h3>
+          <p>For those with this love language, gifts are visible symbols of love, not expressions of materialism. The thoughtfulness behind the gift matters more than its monetary value.</p>
+          <p><strong>Expressions include:</strong></p>
+          <ul>
+            <li><strong>Thoughtful Gifts:</strong> Items that show understanding of the recipient's interests or needs</li>
+            <li><strong>Symbolic Presents:</strong> Objects that represent meaningful memories or inside jokes</li>
+            <li><strong>The Gift of Presence:</strong> Being there during important moments</li>
+          </ul>
+          <p><strong>In Family Context:</strong> A child who makes or selects a gift for a family member is learning to express love in a tangible way, regardless of the gift's monetary value.</p>
+          
+          <div class="reflection-question">
+            What is the most meaningful gift you've ever received? What made it special beyond its material value?
+          </div>
+        </div>
+        
+        <div class="love-language-section">
+          <h3>4. Acts of Service</h3>
+          <p>This language expresses love by doing helpful things for others. It's about easing burdens and showing care through actions rather than words.</p>
+          <p><strong>Expressions include:</strong></p>
+          <ul>
+            <li><strong>Relieving Responsibilities:</strong> Taking over chores or tasks to lighten someone's load</li>
+            <li><strong>Anticipating Needs:</strong> Noticing what would help before being asked</li>
+            <li><strong>Consistent Support:</strong> Reliably following through on commitments</li>
+          </ul>
+          <p><strong>In Family Context:</strong> When family members help each other with responsibilities – like helping with homework or preparing a meal – they create a culture of mutual support and care.</p>
+          
+          <div class="reflection-question">
+            What acts of service have meant the most to you? How do you feel when someone takes action to make your life easier?
+          </div>
+        </div>
+        
+        <div class="love-language-section">
+          <h3>5. Physical Touch</h3>
+          <p>This language uses appropriate physical connection to communicate emotional warmth, security, and belonging.</p>
+          <p><strong>Expressions include:</strong></p>
+          <ul>
+            <li><strong>Comforting Touch:</strong> Holding hands, hugs, or a reassuring hand on the shoulder</li>
+            <li><strong>Attentive Greetings:</strong> Embraces when reuniting after absence</li>
+            <li><strong>Presence During Distress:</strong> Physical comfort during difficult times</li>
+          </ul>
+          <p><strong>In Family Context:</strong> Appropriate physical affection between family members – like a parent's reassuring hug or siblings playfully wrestling – builds bonds of security and trust.</p>
+          
+          <div class="reflection-question">
+            How important is physical touch in your close relationships? What forms of appropriate touch help you feel most connected to others?
+          </div>
+        </div>
+        
+        <div class="theory-point">
+          <h3>Loving Through Difficult Times</h3>
+          <p>Chapman shares an example of a wife who committed to speaking her husband's love language for six months, even when he was unresponsive. By consistently filling his love tank without expectation, she gradually broke through emotional walls and revitalized their relationship.</p>
+          <p>This demonstrates an important truth: sometimes love must be given as a choice rather than a response to feeling loved. When we choose to express love in the way that resonates most with the other person, even during difficult periods, we create space for healing and reconnection.</p>
+          
+          <div class="reflection-question">
+            Have you ever experienced a time when someone continued to express love to you even when it was difficult? How did this impact your relationship?
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="reflection-tab" class="tab-content">
+      <div class="love-language-info">
+        <h2>Personal Reflection Questions</h2>
+        <p>Take time to consider these questions about love languages in your own relationships. You might want to journal your answers or discuss them with someone you trust.</p>
+        
+        <div class="love-language-section">
+          <h3>Understanding Your Love Language</h3>
+          <ol>
+            <li>Think about times when you've felt deeply loved and appreciated. What specifically happened in those moments?</li>
+            <li>When you feel disconnected from someone important to you, what are you typically missing from them?</li>
+            <li>How do you naturally express care when you're not thinking about it?</li>
+            <li>What do you most often request from others in your relationships?</li>
+            <li>How might your family of origin have influenced your love language?</li>
+          </ol>
+        </div>
+        
+        <div class="love-language-section">
+          <h3>Understanding Others' Love Languages</h3>
+          <ol>
+            <li>For someone important in your life, how do they typically show love to others?</li>
+            <li>What does this person tend to complain about in relationships?</li>
+            <li>What do they request most often from you?</li>
+            <li>How might their love language differ from yours, and what misunderstandings could this create?</li>
+            <li>What's one specific way you could speak their love language this week?</li>
+          </ol>
+        </div>
+        
+        <div class="love-language-section">
+          <h3>Applying Love Languages</h3>
+          <ol>
+            <li>How might understanding love languages change your approach to:
+              <ul>
+                <li>Resolving conflicts?</li>
+                <li>Celebrating special occasions?</li>
+                <li>Supporting someone through difficult times?</li>
+              </ul>
+            </li>
+            <li>What one change could you make today that would better fill someone's love tank?</li>
+            <li>How could you respectfully communicate your own love language to others?</li>
+            <li>In what relationships do you need to make a conscious choice to love, even when it's difficult?</li>
+            <li>What barriers might prevent you from consistently speaking others' love languages, and how could you address them?</li>
+          </ol>
+        </div>
+        
+        <div class="bubble">
+          <span class="message">Remember: Understanding love languages isn't about keeping score—it's about creating deeper connection by loving others in ways that truly resonate with them.</span>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      Based on "The 5 Love Languages" by Gary Chapman • Adapted for thoughtful reflection
+    </footer>
+  </div>
+  
+  <div class="reflection-button" onclick="showRandomReflection()">
+    Reflection Prompt
+  </div>
+
+  <script>
+    let answers = [0, 0, 0, 0, 0];
+    let loveLanguages = [
+      "Words of Affirmation",
+      "Quality Time",
+      "Receiving Gifts",
+      "Acts of Service",
+      "Physical Touch"
+    ];
+    
+    let descriptions = [
+      "You value verbal acknowledgment and encouragement. Heartfelt compliments and words of appreciation deeply resonate with you. When someone takes the time to notice your efforts and express their gratitude or admiration, you feel truly loved and valued.",
+      
+      "You value focused, undistracted time with others. Meaningful conversations and shared activities help you feel connected. When someone gives you their full attention without distractions, you feel prioritized and valued in the relationship.",
+      
+      "You appreciate thoughtful gifts that show someone understands who you are. For you, it's not about the material value but the thoughtfulness behind the gesture. A carefully chosen gift communicates that you're known, understood, and worth the effort.",
+      
+      "You feel most loved when people take action to help you or lighten your burdens. When someone notices what needs to be done and takes initiative without being asked, you feel genuinely cared for and supported.",
+      
+      "You connect through appropriate physical touch. Whether it's a reassuring hug, a hand on the shoulder, or simply sitting close to someone you care about, physical connection helps you feel secure, comforted, and valued in relationships."
+    ];
+    
+    let reflectionPrompts = [
+      "Question to consider: How might you better communicate your need for words of affirmation to important people in your life?",
+      "Question to consider: What quality time activities would strengthen your most important relationships?",
+      "Question to consider: How can you help others understand that thoughtful gifts matter to you without seeming materialistic?",
+      "Question to consider: How can you express appreciation when others perform acts of service for you?",
+      "Question to consider: How might you appropriately communicate your need for physical touch in various relationships?"
+    ];
+    
+    let randomReflections = [
+      "Consider how your primary and secondary love languages work together. Do they complement each other?",
+      "How might your love language have been shaped by your childhood experiences?",
+      "In what ways might your love language create misunderstandings with people whose primary language differs?",
+      "How can understanding love languages help you during relationship conflicts?",
+      "Which love language is hardest for you to speak, and how might you develop in that area?",
+      "How do your expressions of love change when you're under stress?",
+      "How might your love language influence your choice of career or hobbies?",
+      "How can you respectfully help others understand your love language?",
+      "What one action could you take today to fill someone's love tank?",
+      "How might awareness of love languages strengthen your community connections, not just romantic relationships?"
+    ];
+    
+    function selectOption(element, questionNumber) {
+      // Clear previous selection for this question
+      let options = element.parentElement.children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].classList.remove('selected');
+      }
+      
+      // Select this option
+      element.classList.add('selected');
+      
+      // Store the answer (index of love language)
+      answers[questionNumber-1] = Array.from(options).indexOf(element);
+    }
+    
+    function showResults() {
+      // Check if all questions are answered
+      let allAnswered = true;
+      for (let i = 0; i < answers.length; i++) {
+        if (answers[i] === 0 && i > 0) { // Skip first element as it's initialized to 0
+          allAnswered = false;
+          break;
+        }
+      }
+      
+      if (!allAnswered) {
+        alert("Please answer all questions for the most accurate results.");
+        return;
+      }
+      
+      // Count frequencies of each love language
+      let counts = [0, 0, 0, 0, 0];
+      for (let i = 0; i < answers.length; i++) {
+        counts[answers[i]]++;
+      }
+      
+      // Find the most frequent love language
+      let maxIndex = 0;
+      for (let i = 1; i < counts.length; i++) {
+        if (counts[i] > counts[maxIndex]) {
+          maxIndex = i;
+        }
+      }
+      
+      // Display result
+      document.getElementById('result-language').textContent = loveLanguages[maxIndex];
+      document.getElementById('result-description').textContent = descriptions[maxIndex];
+      document.getElementById('reflection-prompt').textContent = reflectionPrompts[maxIndex];
+      
+      document.getElementById('quiz').style.display = 'none';
+      document.getElementById('result').style.display = 'block';
+    }
+    
+    function restartQuiz() {
+      // Reset answers
+      answers = [0, 0, 0, 0, 0];
+      
+      // Clear selections
+      let options = document.getElementsByClassName('option');
+      for (let i = 0; i < options.length; i++) {
+        options[i].classList.remove('selected');
+      }
+      
+      // Show quiz, hide results
+      document.getElementById('quiz').style.display = 'block';
+      document.getElementById('result').style.display = 'none';
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+    
+    function openTab(tabId) {
+      // Hide all tab contents
+      let tabContents = document.getElementsByClassName('tab-content');
+      for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].classList.remove('active');
+      }
+      
+      // Deactivate all tabs
+      let tabs = document.getElementsByClassName('tab');
+      for (let i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+      }
+      
+      // Show selected tab content
+      document.getElementById(tabId).classList.add('active');
+      
+      // Activate the clicked tab
+      event.currentTarget.classList.add('active');
+    }
+    
+    function showRandomReflection() {
+      const randomIndex = Math.floor(Math.random() * randomReflections.length);
+      alert("Reflection Question:\n\n" + randomReflections[randomIndex]);
+    }
+  </script>
+</body>
+</html>
