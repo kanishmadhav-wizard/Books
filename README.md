@@ -1,2 +1,3 @@
-# Books
-Interactive webpages of the books I've read
+# 📚 Interactive Book Review Websites
+
+This repository contains a collection of interactive book review websites built using HTML, CSS, and JavaScript. Each folder in the repo represents a unique book review presented through a custom-designed mini-site. You can view them live via GitHub Pages (e.g., [BASB](https://kanishmadhav-wizard.github.io/Books/BASB/), [Digital minimalism](https://kanishmadhav-wizard.github.io/Books/Digital%20Minimalism/)). To try them locally, clone the repo using `git clone https://github.com/yourusername/repo-name.git`, navigate to any folder, and open `index.html` in your browser. This project is licensed under MIT — feel free to explore, modify, and build on it.
