@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1% Daily Boost | Fun Habit Tracker</title>
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --primary-light: #a78bfa;
+            --primary-dark: #7c3aed;
+            --secondary: #10b981;
+            --secondary-light: #34d399;
+            --accent: #f97316;
+            --accent-light: #fdba74;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #9ca3af;
+            --gray-light: #e5e7eb;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            color: var(--dark);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            pointer-events: none;
+            display: none;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.1;
+        }
+        
+        .shape {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .motivation-banner {
+            background: linear-gradient(to right, var(--accent-light), var(--accent));
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .motivation-banner h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .motivation-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        
+        .date-display {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .date-display h2 {
+            font-size: 1.75rem;
+            color: var(--primary-dark);
+        }
+        
+        .date-display p {
+            font-size: 1.25rem;
+            color: var(--gray);
+        }
+        
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .category {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0.5rem;
+        }
+        
+        .morning::before {
+            background: linear-gradient(to right, #fde68a, #fbbf24);
+        }
+        
+        .mental::before {
+            background: linear-gradient(to right, #93c5fd, #3b82f6);
+        }
+        
+        .emotional::before {
+            background: linear-gradient(to right, #c4b5fd, #8b5cf6);
+        }
+        
+        .connection::before {
+            background: linear-gradient(to right, #6ee7b7, #10b981);
+        }
+        
+        .deep-work::before {
+            background: linear-gradient(to right, #a5b4fc, #6366f1);
+        }
+        
+        .night::before {
+            background: linear-gradient(to right, #a78bfa, #7c3aed);
+        }
+        
+        .category h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .category-icon {
+            font-size: 1.75rem;
+        }
+        
+        .category-progress {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar-container {
+            flex: 1;
+            height: 0.5rem;
+            background-color: var(--gray-light);
+            border-radius: 1rem;
+            overflow: hidden;
+            margin: 0 1rem;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--secondary-light), var(--secondary));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        
+        .checklist {
+            margin-top: 1rem;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .checklist-item:hover {
+            background-color: var(--gray-light);
+        }
+        
+        .custom-checkbox {
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid var(--gray);
+            border-radius: 0.25rem;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .checklist-item.completed .custom-checkbox {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+        
+        .checkmark {
+            color: white;
+            font-size: 1rem;
+            display: none;
+        }
+        
+        .checklist-item.completed .checkmark {
+            display: block;
+        }
+        
+        .checklist-item label {
+            flex: 1;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .checklist-item.completed label {
+            text-decoration: line-through;
+            color: var(--gray);
+        }
+        
+        .summary-section {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .summary-title {
+            font-size: 1.75rem;
+            color: var(--primary-dark);
+        }
+        
+        .celebration-btn {
+            background: linear-gradient(to right, var(--accent-light), var(--accent));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .celebration-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .celebration-btn:active {
+            transform: translateY(0);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .big-circle-progress {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            margin: 0 auto 2rem;
+        }
+        
+        .circle-bg {
+            fill: none;
+            stroke: var(--gray-light);
+            stroke-width: 12;
+        }
+        
+        .circle-progress {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-width: 12;
+            stroke-linecap: round;
+            stroke-dasharray: 565.48; /* 2 * PI * 90 */
+            stroke-dashoffset: 565.48;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 1s ease;
+        }
+        
+        .circle-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .circle-percentage {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            line-height: 1;
+        }
+        
+        .circle-label {
+            font-size: 1rem;
+            color: var(--gray);
+        }
+        
+        .reset-section {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-light);
+        }
+        
+        .reset-text {
+            margin-bottom: 1rem;
+            color: var(--gray);
+        }
+        
+        .reset-btn {
+            background-color: var(--gray-light);
+            color: var(--dark);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .reset-btn:hover {
+            background-color: var(--gray);
+            color: white;
+        }
+        
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        
+        .footer p {
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            top: -20px;
+            animation: fall linear forwards;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+        
+        /* Animations */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .animate-bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="confetti" id="confetti-container"></div>
+    
+    <div class="header">
+        <div class="header-shapes" id="header-shapes"></div>
+        <h1>🚀 1% Daily Improvement Challenge</h1>
+        <p>Small steps today lead to massive results tomorrow!</p>
+    </div>
+    
+    <div class="container">
+        <div class="motivation-banner animate-pulse">
+            <h2>Today's Motivation</h2>
+            <p class="motivation-text" id="motivation-text">
+                "We are what we repeatedly do. Excellence, then, is not an act, but a habit."
+            </p>
+        </div>
+        
+        <div class="date-display">
+            <h2 id="current-date">Friday, April 11</h2>
+            <p>Let's make today count!</p>
+        </div>
+        
+        <div class="categories">
+            <div class="category morning">
+                <h3><span class="category-icon">🌅</span> Morning Routine</h3>
+                <div class="category-progress">
+                    <span>Progress:</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="morning-progress"></div>
+                    </div>
+                    <span class="progress-text" id="morning-progress-text">0/5</span>
+                </div>
+                <div class="checklist">
+                    <div class="checklist-item" data-category="morning" data-index="0">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Wake up before 7:00 AM</label>
+                    </div>
+                    <div class="checklist-item" data-category="morning" data-index="1">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Avoid phone for first 30 mins</label>
+                    </div>
+                    <div class="checklist-item" data-category="morning" data-index="2">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Drink a full glass of water</label>
+                    </div>
+                    <div class="checklist-item" data-category="morning" data-index="3">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Make your bed</label>
+                    </div>
+                    <div class="checklist-item" data-category="morning" data-index="4">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Move your body (5-15 mins)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category mental">
+                <h3><span class="category-icon">🧠</span> Mental Growth</h3>
+                <div class="category-progress">
+                    <span>Progress:</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="mental-progress"></div>
+                    </div>
+                    <span class="progress-text" id="mental-progress-text">0/3</span>
+                </div>
+                <div class="checklist">
+                    <div class="checklist-item" data-category="mental" data-index="0">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Read/listen (10+ mins)</label>
+                    </div>
+                    <div class="checklist-item" data-category="mental" data-index="1">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Learn 1 new thing in your field</label>
+                    </div>
+                    <div class="checklist-item" data-category="mental" data-index="2">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Write/reflect on what you learned</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category emotional">
+                <h3><span class="category-icon">🧘</span> Emotional & Spiritual</h3>
+                <div class="category-progress">
+                    <span>Progress:</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="emotional-progress"></div>
+                    </div>
+                    <span class="progress-text" id="emotional-progress-text">0/4</span>
+                </div>
+                <div class="checklist">
+                    <div class="checklist-item" data-category="emotional" data-index="0">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Check-in with your feelings</label>
+                    </div>
+                    <div class="checklist-item" data-category="emotional" data-index="1">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Accept emotions without judging</label>
+                    </div>
+                    <div class="checklist-item" data-category="emotional" data-index="2">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Write/speak 1 affirmation</label>
+                    </div>
+                    <div class="checklist-item" data-category="emotional" data-index="3">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Do something joyful</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category connection">
+                <h3><span class="category-icon">💬</span> Connection</h3>
+                <div class="category-progress">
+                    <span>Progress:</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="connection-progress"></div>
+                    </div>
+                    <span class="progress-text" id="connection-progress-text">0/3</span>
+                </div>
+                <div class="checklist">
+                    <div class="checklist-item" data-category="connection" data-index="0">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Message/talk to someone you love</label>
+                    </div>
+                    <div class="checklist-item" data-category="connection" data-index="1">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Offer a compliment or support</label>
+                    </div>
+                    <div class="checklist-item" data-category="connection" data-index="2">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Avoid toxic interactions</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category deep-work">
+                <h3><span class="category-icon">💻</span> Deep Work / Focus</h3>
+                <div class="category-progress">
+                    <span>Progress:</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="deep-work-progress"></div>
+                    </div>
+                    <span class="progress-text" id="deep-work-progress-text">0/3</span>
+                </div>
+                <div class="checklist">
+                    <div class="checklist-item" data-category="deep-work" data-index="0">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Block 25-60 mins uninterrupted work</label>
+                    </div>
+                    <div class="checklist-item" data-category="deep-work" data-index="1">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Break task into small chunks</label>
+                    </div>
+                    <div class="checklist-item" data-category="deep-work" data-index="2">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Avoid multitasking</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category night">
+                <h3><span class="category-icon">🌙</span> Night Routine</h3>
+                <div class="category-progress">
+                    <span>Progress:</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="night-progress"></div>
+                    </div>
+                    <span class="progress-text" id="night-progress-text">0/5</span>
+                </div>
+                <div class="checklist">
+                    <div class="checklist-item" data-category="night" data-index="0">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Reflect: What went well?</label>
+                    </div>
+                    <div class="checklist-item" data-category="night" data-index="1">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Write 3 wins (even small ones)</label>
+                    </div>
+                    <div class="checklist-item" data-category="night" data-index="2">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Plan 3 priorities for tomorrow</label>
+                    </div>
+                    <div class="checklist-item" data-category="night" data-index="3">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>No phone 30 mins before sleep</label>
+                    </div>
+                    <div class="checklist-item" data-category="night" data-index="4">
+                        <div class="custom-checkbox">
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <label>Sleep 7-9 hours</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="summary-section">
+            <div class="summary-header">
+                <h2 class="summary-title">Your Daily Progress</h2>
+                <button class="celebration-btn" id="celebration-btn">🎉 Celebrate Progress!</button>
+            </div>
+            
+            <div class="big-circle-progress">
+                <svg width="200" height="200">
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#8b5cf6" />
+                            <stop offset="100%" stop-color="#10b981" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="circle-bg" cx="100" cy="100" r="90"></circle>
+                    <circle id="main-progress" class="circle-progress" cx="100" cy="100" r="90"></circle>
+                </svg>
+                <div class="circle-text">
+                    <div class="circle-percentage" id="total-percentage">0%</div>
+                    <div class="circle-label">completed</div>
+                </div>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-label">Tasks Completed</div>
+                    <div class="stat-value" id="tasks-completed">0</div>
+                    <div class="stat-label">of 23 total</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">Strongest Category</div>
+                    <div class="stat-value" id="strongest-category">-</div>
+                    <div class="stat-label" id="strongest-percent">0%</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">Accumulated Growth</div>
+                    <div class="stat-value">1%</div>
+                    <div class="stat-label">daily improvement</div>
+                </div>
+            </div>
+            
+            <div class="reset-section">
+                <p class="reset-text">Your progress will automatically reset at midnight. You can also reset manually:</p>
+                <button class="reset-btn" id="reset-btn">Reset All Progress</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>💪 Remember: Small improvements compound over time. Show up daily, stay consistent, and watch your life transform!</p>
+    </div>
+
+    <script>
+        // DOM Elements
+        const checklistItems = document.querySelectorAll('.checklist-item');
+        const celebrationBtn = document.getElementById('celebration-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const confettiContainer = document.getElementById('confetti-container');
+        const mainProgress = document.getElementById('main-progress');
+        const totalPercentage = document.getElementById('total-percentage');
+        const tasksCompleted = document.getElementById('tasks-completed');
+        const strongestCategory = document.getElementById('strongest-category');
+        const strongestPercent = document.getElementById('strongest-percent');
+        const motivationText = document.getElementById('motivation-text');
+        const currentDate = document.getElementById('current-date');
+        const headerShapes = document.getElementById('header-shapes');
+
+        // Motivational Quotes
+        const motivationalQuotes = [
+            'We are what we repeatedly do. Excellence, then, is not an act, but a habit. - Aristotle',
+            "The difference between ordinary and extraordinary is that little 'extra'. - Jimmy Johnson",
+            'Success is the sum of small efforts, repeated day in and day out. - Robert Collier',
+            'The secret of getting ahead is getting started. - Mark Twain',
+            "Don't count the days, make the days count. - Muhammad Ali",
+            "You don't have to be great to start, but you have to start to be great. - Zig Ziglar",
+            'Small daily improvements are the key to staggering long-term results. - Unknown',
+            'Discipline is choosing between what you want now and what you want most. - Abraham Lincoln',
+            "The only bad workout is the one that didn't happen. - Unknown",
+            'Your future is created by what you do today, not tomorrow. - Robert Kiyosaki'
+        ];
+
+        // Category Definitions
+        const categories = {
+            'morning': {
+                total: 5,
+                completed: 0,
+                progress: document.getElementById('morning-progress'),
+                progressText: document.getElementById('morning-progress-text')
+            },
+            'mental': {
+                total: 3,
+                completed: 0,
+                progress: document.getElementById('mental-progress'),
+                progressText: document.getElementById('mental-progress-text')
+            },
+            'emotional': {
+                total: 4,
+                completed: 0,
+                progress: document.getElementById('emotional-progress'),
+                progressText: document.getElementById('emotional-progress-text')
+            },
+            'connection': {
+                total: 3,
+                completed: 0,
+                progress: document.getElementById('connection-progress'),
+                progressText: document.getElementById('connection-progress-text')
+            },
+            'deep-work': {
+                total: 3,
+                completed: 0,
+                progress: document.getElementById('deep-work-progress'),
+                progressText: document.getElementById('deep-work-progress-text')
+            },
+            'night': {
+                total: 5,
+                completed: 0,
+                progress: document.getElementById('night-progress'),
+                progressText: document.getElementById('night-progress-text')
+            }
+        };
+
+        // Header Shapes
+        function createHeaderShapes() {
+            for (let i = 0; i < 15; i++) {
+                const shape = document.createElement('div');
+                shape.classList.add('shape');
+                const size = Math.random() * 100 + 20;
+                shape.style.width = `${size}px`;
+                shape.style.height = `${size}px`;
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                shape.style.left = `${left}%`;
+                shape.style.top = `${top}%`;
+                headerShapes.appendChild(shape);
+            }
+        }
+
+        // Motivation & Date
+        function showMotivation() {
+            const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+            motivationText.textContent = quote;
+        }
+
+        function setCurrentDate() {
+            const today = new Date();
+            const options = { weekday: 'long', month: 'long', day: 'numeric' };
+            currentDate.textContent = today.toLocaleDateString('en-US', options);
+        }
+
+        // Progress Tracker
+        function updateProgress() {
+            let totalDone = 0;
+            let totalTasks = 0;
+            let strongest = '';
+            let highestPercent = 0;
+
+            for (const [key, cat] of Object.entries(categories)) {
+                const percent = (cat.completed / cat.total) * 100;
+                cat.progress.style.width = `${percent}%`;
+                cat.progressText.textContent = `${cat.completed}/${cat.total}`;
+                totalDone += cat.completed;
+                totalTasks += cat.total;
+
+                if (percent > highestPercent) {
+                    highestPercent = percent;
+                    strongest = key;
+                }
+            }
+
+            const totalPercent = Math.round((totalDone / totalTasks) * 100);
+            mainProgress.style.strokeDashoffset = 565.48 * (1 - totalPercent / 100);
+            totalPercentage.textContent = `${totalPercent}%`;
+            tasksCompleted.textContent = totalDone;
+            strongestCategory.textContent = strongest ? strongest.replace('-', ' ') : '-';
+            strongestPercent.textContent = `${Math.round(highestPercent)}%`;
+        }
+
+        // Checklist Interactions
+        checklistItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const category = item.dataset.category;
+                const index = parseInt(item.dataset.index);
+
+                item.classList.toggle('completed');
+
+                if (item.classList.contains('completed')) {
+                    categories[category].completed++;
+                } else {
+                    categories[category].completed--;
+                }
+
+                updateProgress();
+            });
+        });
+
+        // Celebration Confetti
+        celebrationBtn.addEventListener('click', () => {
+            confettiContainer.style.display = 'block';
+            for (let i = 0; i < 100; i++) {
+                const piece = document.createElement('div');
+                piece.classList.add('confetti-piece');
+                piece.style.left = `${Math.random() * 100}%`;
+                piece.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                piece.style.animationDuration = `${Math.random() * 2 + 2}s`;
+                confettiContainer.appendChild(piece);
+
+                setTimeout(() => piece.remove(), 4000);
+            }
+
+            setTimeout(() => {
+                confettiContainer.style.display = 'none';
+            }, 3000);
+        });
+
+        // Reset Progress
+        resetBtn.addEventListener('click', () => {
+            checklistItems.forEach(item => {
+                item.classList.remove('completed');
+            });
+
+            for (const cat of Object.values(categories)) {
+                cat.completed = 0;
+            }
+
+            updateProgress();
+        });
+
+        // Initialize
+        createHeaderShapes();
+        showMotivation();
+        setCurrentDate();
+        updateProgress();
+        </script>
+    </body>
+</html>
