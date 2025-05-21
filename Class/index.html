@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sri Maruthi Spoken English Centre</title>
+    <style>
+        :root {
+            --primary: #d30090;
+            --secondary: #3f0a83;
+            --accent: #ffcc00;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        nav {
+            background-color: var(--secondary);
+            padding: 1rem 0;
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        .nav-links li {
+            margin: 0 1rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/api/placeholder/1200/600');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 5rem 0;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--dark);
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #e6b800;
+            transform: translateY(-2px);
+        }
+        
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .course-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .course-img {
+            height: 200px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--secondary);
+        }
+        
+        .course-content {
+            padding: 1.5rem;
+        }
+        
+        .course-content h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .course-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .feature-tag {
+            background-color: #f0f0f0;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .section {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--secondary);
+        }
+        
+        .faq-item {
+            margin-bottom: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 1rem;
+            background-color: #f5f5f5;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-question:after {
+            content: '+';
+            font-size: 1.5rem;
+        }
+        
+        .faq-question.active:after {
+            content: '-';
+        }
+        
+        .faq-answer {
+            padding: 0 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: white;
+        }
+        
+        .faq-answer.show {
+            padding: 1rem;
+            max-height: 500px;
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+        
+        .contact-info {
+            margin: 2rem 0;
+        }
+        
+        .contact-info p {
+            margin: 0.5rem 0;
+        }
+        
+        .social-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: opacity 0.3s;
+        }
+        
+        .social-links a:hover {
+            opacity: 0.8;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .nav-links li {
+                margin: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Sri Maruthi Spoken English Centre</h1>
+            <p>Good Communication Skills Are Key To Success</p>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="#courses">Courses</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#" class="btn" onclick="openDemo()">Free Demo</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <section class="hero">
+        <div class="container">
+            <h2>Learn English Fluently in a Few Months</h2>
+            <p>We focus on speaking fluency & pronunciation with our proven teaching methodology</p>
+            <a href="#contact" class="btn">Enroll Now</a>
+        </div>
+    </section>
+    
+    <section id="courses" class="section">
+        <div class="container">
+            <h2 class="section-title">Our Courses</h2>
+            <div class="course-grid">
+                <div class="course-card">
+                    <div class="course-img">📢</div>
+                    <div class="course-content">
+                        <h3>Spoken English Course</h3>
+                        <p>Master English speaking in just a few months with our specialized curriculum.</p>
+                        <div class="course-features">
+                            <span class="feature-tag">Speaking</span>
+                            <span class="feature-tag">Pronunciation</span>
+                            <span class="feature-tag">Fluency</span>
+                        </div>
+                        <a href="#contact" class="btn">Enquire Now</a>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-img">📝</div>
+                    <div class="course-content">
+                        <h3>English Grammar Course</h3>
+                        <p>Learn grammar the fun way and build a strong foundation for communication.</p>
+                        <div class="course-features">
+                            <span class="feature-tag">Grammar Rules</span>
+                            <span class="feature-tag">Sentence Formation</span>
+                            <span class="feature-tag">Practice</span>
+                        </div>
+                        <a href="#contact" class="btn">Enquire Now</a>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-img">📚</div>
+                    <div class="course-content">
+                        <h3>English Reading & Writing Course</h3>
+                        <p>Improve your reading comprehension and writing skills with structured lessons.</p>
+                        <div class="course-features">
+                            <span class="feature-tag">Reading</span>
+                            <span class="feature-tag">Writing</span>
+                            <span class="feature-tag">Spelling</span>
+                        </div>
+                        <a href="#contact" class="btn">Enquire Now</a>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-img">🇮🇳</div>
+                    <div class="course-content">
+                        <h3>Tamil Reading & Writing Course</h3>
+                        <p>Learn to read and write Tamil with our structured and effective methodology.</p>
+                        <div class="course-features">
+                            <span class="feature-tag">Tamil Reading</span>
+                            <span class="feature-tag">Tamil Writing</span>
+                            <span class="feature-tag">Tamil Grammar</span>
+                        </div>
+                        <a href="#contact" class="btn">Enquire Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="features" class="section" style="background-color: #f5f5f5;">
+        <div class="container">
+            <h2 class="section-title">Why Choose Us?</h2>
+            <div class="course-grid">
+                <div class="course-card">
+                    <div class="course-content">
+                        <h3>Online & Offline Classes</h3>
+                        <p>Flexible learning options with live online classes and traditional classroom sessions.</p>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-content">
+                        <h3>Experienced Teachers</h3>
+                        <p>Learn from qualified and experienced language instructors who focus on practical skills.</p>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-content">
+                        <h3>Comprehensive Syllabus</h3>
+                        <p>Our courses cover all aspects: Speaking, Grammar, Reading, Listening, and Vocabulary.</p>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-content">
+                        <h3>Proven Results</h3>
+                        <p>Our students have achieved significant improvement in language skills in just a few months.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="faq" class="section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">Are you struggling to speak English at college or work?</div>
+                <div class="faq-answer">
+                    <p>Many of our students had this challenge before joining our program. Our specialized course focuses on building conversational confidence and practical skills that you'll use every day at college or in the workplace.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Are you afraid to speak English in public due to pronunciation issues?</div>
+                <div class="faq-answer">
+                    <p>Our teaching methodology emphasizes correct pronunciation from day one. Through specialized exercises and personalized feedback, you'll overcome pronunciation difficulties and speak with confidence.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Having Tamil language skills but lacking English skills?</div>
+                <div class="faq-answer">
+                    <p>We understand the specific challenges faced by Tamil speakers when learning English. Our program bridges this gap with tailored exercises and teaching techniques designed specifically for Tamil speakers.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Do you need English knowledge for your children's education?</div>
+                <div class="faq-answer">
+                    <p>Absolutely! We offer special courses for parents who want to help their children with schoolwork. Our practical approach ensures you'll learn the English needed to support your children's educational journey.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Do you want to learn to write Tamil and English without spelling mistakes?</div>
+                <div class="faq-answer">
+                    <p>Our reading and writing courses focus on eliminating spelling mistakes and improving written communication. With our structured approach, you'll see improvements in spelling accuracy within just one month of consistent practice.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Not getting good job opportunities due to poor English skills?</div>
+                <div class="faq-answer">
+                    <p>Many of our students have secured better job opportunities after completing our courses. We focus on professional English communication that employers look for, giving you a competitive edge in the job market.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Born in Tamil Nadu but unable to read and write Tamil?</div>
+                <div class="faq-answer">
+                    <p>Our Tamil reading and writing course is designed for those who speak Tamil but cannot read or write it. With our structured approach, you'll learn to read and write Tamil fluently, connecting deeper with your cultural heritage.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title">Register for a Free Demo Class</h2>
+            <form class="contact-form" id="demoForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email (Optional)</label>
+                    <input type="email" id="email" name="email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="course">Interested Course</label>
+                    <select id="course" name="course" required>
+                        <option value="">Select a course</option>
+                        <option value="spoken-english">Spoken English Course</option>
+                        <option value="english-grammar">English Grammar Course</option>
+                        <option value="english-reading-writing">English Reading & Writing</option>
+                        <option value="tamil-reading-writing">Tamil Reading & Writing</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Any Questions?</label>
+                    <textarea id="message" name="message"></textarea>
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%;">Book Free Demo Class</button>
+            </form>
+            
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+                <p>274, Kamarajar Street, Thiruchy Main Road, Gate Sri Sakthi Kaliyamman Kovil,</p>
+                <p>Lal-Ji Complex Near, Tharapadi Gate, Salem - 6</p>
+                <p>Phone: 8838552697, 9952303157, 9943222245</p>
+                <p>Class Timings: Monday to Friday</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <h3>Sri Maruthi Spoken English Centre</h3>
+            <p>Helping you achieve fluency and confidence in English and Tamil</p>
+            
+            <div class="social-links">
+                <a href="#" aria-label="Facebook">📱</a>
+                <a href="#" aria-label="Instagram">📷</a>
+                <a href="#" aria-label="WhatsApp">📞</a>
+            </div>
+            
+            <p>&copy; 2025 Sri Maruthi Spoken English Centre. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Accordion
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                question.classList.toggle('active');
+                answer.classList.toggle('show');
+            });
+        });
+        
+        // Demo Form Submission
+        const demoForm = document.getElementById('demoForm');
+        
+        demoForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            alert(`Thank you, ${name}! We have received your demo request. Our team will contact you shortly to schedule your free demo class.`);
+            demoForm.reset();
+        });
+        
+        // Free Demo Button
+        function openDemo() {
+            document.getElementById('contact').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
